@@ -1,5 +1,7 @@
 // モジュール読み込み
 import line from '@line/bot-sdk';
+import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
+import { DynamoDB } from '@aws-sdk/client-dynamodb';
 import { error, log } from '../log.js';
 import { bot } from '../bot.js';
 import { AppContext } from '../app-context.js';
@@ -15,6 +17,15 @@ export const webhook = (req, res) => {
   // リクエストボディからイベントを取り出し
   const { events } = req.body;
 
+  // DynamoDB DocumentClientのインスタンスを生成
+  const dynamoDocument = DynamoDBDocument.from(new DynamoDB({
+    endpoint: 'http://localhost:8000',
+    region: 'ap-northeast-1',
+  }));
+
+  // DynamoDBのContextを作成
+  const dynamoDBContext = new DynamoDBContext(dynamoDocument);
+
   // bot-sdkのクライアントを作成
   const lineClient = new line.Client({
     channelAccessToken: CHANNEL_ACCESS_TOKEN,
@@ -25,6 +36,7 @@ export const webhook = (req, res) => {
 
   // AppContextを作成
   const appContext = new AppContext({
+    dynamoDBContext,
     lineClient,
     contentFileDownloader,
   });
