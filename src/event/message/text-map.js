@@ -1,3 +1,6 @@
+import {
+  createData, deleteData, readData, updateData,
+} from '../../crud.js';
 // ユーザーのプロフィールを取得する関数
 const getUserProfile = (event, client) => client.getProfile(event.source.userId);
 
