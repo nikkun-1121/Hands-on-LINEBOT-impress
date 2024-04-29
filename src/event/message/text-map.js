@@ -1,6 +1,7 @@
 import {
   createData, deleteData, readData, updateData,
 } from '../../crud.js';
+
 // ユーザーのプロフィールを取得する関数
 const getUserProfile = (event, client) => client.getProfile(event.source.userId);
 
@@ -371,4 +372,35 @@ export const messageMap = {
     type: 'text',
     text: `ここは${event.source.type}だよ！`,
   }),
+  Create: async (event, appContext) => {
+    const date = new Date();
+    await createData(event.source.userId, 'testData', `Data created at ${date}`, appContext);
+    return {
+      type: 'text',
+      text: 'データが作成されました',
+    };
+  },
+  Read: async (event, appContext) => {
+    const dbData = await readData(event.source.userId, 'testData', appContext);
+    return {
+      type: 'text',
+      text: `DBには以下のデータが保存されています\n\n${dbData.Items[0].Data}`,
+    };
+  },
+  Update: async (event, appContext) => {
+    const date = new Date();
+    await updateData(event.source.userId, 'testData', `Data created at ${date}`, appContext);
+    return {
+      type: 'text',
+      text: 'データを更新しました',
+    };
+  },
+  Delete: async (event, appContext) => {
+    await deleteData(event.source.userId, 'testData', appContext);
+    return {
+      type: 'text',
+      text: 'データを削除しました',
+    };
+  },
+
 };
