@@ -4,6 +4,7 @@ import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
 import { DynamoDB } from '@aws-sdk/client-dynamodb';
 import { error, log } from '../log.js';
 import { bot } from '../bot.js';
+import { DynamoDBContext } from '../db.js';
 import { AppContext } from '../app-context.js';
 import { saveContentFileToDownloadDir } from '../save-file.js';
 
